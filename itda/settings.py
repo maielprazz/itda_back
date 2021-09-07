@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 import datetime
 import ldap
-from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPSearchUnion
 
 
 load_dotenv()
@@ -32,10 +32,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'muiadmin',
     'drf_yasg',
     'rest_framework',
-    # 'base',
+    'base',
     'authentication',
     # 'users',
     'expenses',
@@ -72,7 +72,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'frontend/build'),
+            os.path.join(BASE_DIR, 'muiadmin/build'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -93,16 +93,52 @@ WSGI_APPLICATION = 'itda.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'old': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
+    # 'old': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
     'default': {
             'ENGINE': 'mssql',
-            'NAME': 'DJANGO',
-            'USER': 'django',
-            'PASSWORD': 'secret',
-            'HOST': 'DESKTOP-FF51PBJ',
+            'NAME': 'DB_Web',
+            'USER': 'userdbsql',
+            'PASSWORD': 'Us3rdbsql',
+            'HOST': 'JKTHOMAASQL03',
+            'PORT': '1433',
+
+            'OPTIONS': {
+                'driver': 'ODBC Driver 17 for SQL Server',
+            },
+        },
+        'sql2': {
+            'ENGINE': 'mssql',
+            'NAME': 'DB_PM',
+            'USER': 'userdbsql',
+            'PASSWORD': 'Us3rdbsql',
+            'HOST': 'JKTHOMAASQL02',
+            'PORT': '1433',
+
+            'OPTIONS': {
+                'driver': 'ODBC Driver 17 for SQL Server',
+            },
+        },
+        'sql': {
+            'ENGINE': 'mssql',
+            'NAME': 'MAP',
+            'USER': 'userdbsql',
+            'PASSWORD': 'Us3rdbsql',
+            'HOST': 'JKTHOMAASQL',
+            'PORT': '1433',
+
+            'OPTIONS': {
+                'driver': 'ODBC Driver 17 for SQL Server',
+            },
+        },
+        'rds': {
+            'ENGINE': 'mssql',
+            'NAME': 'db_pm',
+            'USER': 'maa_sql',
+            'PASSWORD': 'MAAsql#admin#',
+            'HOST': 'rm-d9jl51n4984b493ex.mssql.ap-southeast-5.rds.aliyuncs.com',
             'PORT': '1433',
 
             'OPTIONS': {
@@ -116,8 +152,8 @@ REST_FRAMEWORK = {
     # 'rest_framework.renderers.JSONRenderer',
     # 'rest_framework.renderers.BrowsableAPIRenderer',
     # ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 10,
     'NON_FIELD_ERRORS_KEY': 'Error',
      'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -126,7 +162,7 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(hours=1),
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(hours=4),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
 }
 
@@ -169,9 +205,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/build/static'),
-    os.path.join(BASE_DIR, 'static'),
+    # os.path.join(BASE_DIR, 'muiadmin/build/static'),
+    os.path.join(BASE_DIR, 'muiadmin/build/static'),
+    # os.path.join(BASE_DIR, 'static'),
 ]
 
 # Default primary key field type
@@ -186,13 +224,23 @@ EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD')
 
 ############################### LDAP Settings #####################
 # Baseline configuration.
-AUTH_LDAP_SERVER_URI = os.environ.get('LDAP_HOST_URI')
+AUTH_LDAP_SERVER_URI = 'ldap://map.co.id:389'#os.environ.get('LDAP_HOST_URI')
 
-AUTH_LDAP_BIND_DN = "cn=admin,ou=users,ou=system"
-AUTH_LDAP_BIND_PASSWORD = "1234"
-AUTH_LDAP_USER_SEARCH = LDAPSearch(
-    "ou=users,ou=system", ldap.SCOPE_SUBTREE, "(cn=%(user)s)"
+AUTH_LDAP_BIND_DN = "CN=ba admin,OU=ADMINS,OU=Functional Account,DC=map,DC=co,DC=id"
+AUTH_LDAP_BIND_PASSWORD = "Password01"
+AUTH_LDAP_USER_SEARCH = LDAPSearchUnion(
+LDAPSearch("OU=Bigfix Deployment,OU=Users,OU=MAA,DC=map,DC=co,DC=id", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+LDAPSearch("OU=ADMINS,OU=Functional Account,DC=map,DC=co,DC=id", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+LDAPSearch("OU=Head Office,OU=Users,OU=MAA,DC=map,DC=co,DC=id", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
+LDAPSearch("OU=HO,OU=Users,OU=MAP,DC=map,DC=co,DC=id", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"),
 )
+
+# LDAPSearch("OU=Bigfix Deployment,OU=Users,OU=MAA,DC=map,DC=co,DC=id", ldap.SCOPE_SUBTREE, "(cn=%(user)s)"),
+# LDAPSearch("OU=Bigfix Deployment,OU=Users,OU=MAA,DC=map,DC=co,DC=id", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
+# LDAPSearch("OU=Head Office,OU=Users,OU=MAA,DC=map,DC=co,DC=id", ldap.SCOPE_SUBTREE, "(cn=%(user)s)"),
+# OU=Stores,OU=MAA,DC=map,DC=co,DC=id
+# OU=Store Ecomm,OU=MAA,DC=map,DC=co,DC=id
+
 # Or:
 # AUTH_LDAP_USER_DN_TEMPLATE = 'uid=%(user)s,ou=users,dc=example,dc=com'
 
@@ -210,9 +258,9 @@ AUTH_LDAP_USER_SEARCH = LDAPSearch(
 
 # Populate the Django user from the LDAP directory.
 AUTH_LDAP_USER_ATTR_MAP = {
-    "username": "cn",
+    "username": "sAMAccountName",
     "email": "mail",
-    "employeeID" : "employeeNumber"
+    "employeeID" : "employeeID"
 }
 
 # AUTH_LDAP_USER_FLAGS_BY_GROUP = {

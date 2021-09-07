@@ -1,6 +1,97 @@
-from django.db.models.fields.related import OneToOneField
-from users.models import UserAccounts
 from django.db import models
+
+class StoreMasterModel(models.Model):
+  # Sitecode=models.CharField(primary_key=True,max_length=30)
+  # Lc_regrouping=models.CharField(max_length=30, null = True, blank=True)
+  # Area=models.CharField(max_length=30, null = True, blank=True)
+  # Sbu=models.CharField(max_length=30, null = True, blank=True)
+  # Status=models.CharField(max_length=30, null = True, blank=True)
+  # Sitecode_old=models.CharField(max_length=30, null = True, blank=True)
+  # Startdate=models.CharField(max_length=30, null = True, blank=True)
+  # Enddate=models.CharField(max_length=30, null = True, blank=True)
+  # Site_category=models.CharField(max_length=30, null = True, blank=True)
+  # Site_subcategory=models.CharField(max_length=30, null = True, blank=True)
+
+  # OMCODE=models.CharField(max_length=30, null = True, blank=True)
+  # STAT_OM=models.CharField(max_length=30, null = True, blank=True)
+  # STORE_TYPE=models.CharField(max_length=30, null = True, blank=True)
+  # BRAND_ALLOW=models.CharField(max_length=30, null = True, blank=True)
+  # UPDATE_DATE=models.CharField(max_length=30, null = True, blank=True)
+  # UPDATE_USER=models.CharField(max_length=30, null = True, blank=True)
+  # REMARK=models.CharField(max_length=30, null = True, blank=True)
+  # ISLAND=models.CharField(max_length=30, null = True, blank=True)
+  # PROVINCE=models.CharField(max_length=30, null = True, blank=True)
+  # REGION=models.CharField(max_length=30, null = True, blank=True)
+  # SIZE=models.CharField(max_length=30, null = True, blank=True)
+  # TIER=models.CharField(max_length=30, null = True, blank=True)
+  # OICODE=models.CharField(max_length=30, null = True, blank=True)
+  # STAT_OIC=models.CharField(max_length=30, null = True, blank=True)
+  # OPENINGSTORE_DATE=models.CharField(max_length=30, null = True, blank=True)
+  # DEPT_STORE=models.CharField(max_length=30, null = True, blank=True)
+  # SITECKS=models.CharField(max_length=30, null = True, blank=True)
+  # SITECODE_DUMMY=models.CharField(max_length=30, null = True, blank=True)
+  # TIER_VERSION=models.CharField(max_length=30, null = True, blank=True)
+  # OMREG=models.CharField(max_length=30, null = True, blank=True)
+  # SITE_CAT_DISC=models.CharField(max_length=30, null = True, blank=True)
+  # CLOSINGSTORE_DATE=models.CharField(max_length=30, null = True, blank=True)
+  # SITE_STATUS=models.CharField(max_length=30, null = True, blank=True)
+##################### SP_GENERATE_DATA {}
+  ASOFDATE=models.CharField(max_length=50,null=True,blank=True)
+  COMPCODE=models.CharField(max_length=5,null=True,blank=True)
+  SITECODE=models.CharField(primary_key=True, max_length=5)
+  STOREDESC=models.CharField(max_length=50,null=True,blank=True)
+  MALLNAME=models.CharField(max_length=50,null=True,blank=True)
+  TELP=models.CharField(max_length=30,null=True,blank=True)
+  EMAIL=models.CharField(max_length=30,null=True,blank=True)
+  CONCEPT=models.CharField(max_length=30,null=True,blank=True)
+  PROVINCE=models.CharField(max_length=30,null=True,blank=True)
+  REGION=models.CharField(max_length=30,null=True,blank=True)
+  GM_OM=models.CharField(max_length=30,null=True,blank=True)
+  GM_MAIL=models.CharField(max_length=30,null=True,blank=True)
+  OM_NAME=models.CharField(max_length=30,null=True,blank=True)
+  OM_MAIL=models.CharField(max_length=30,null=True,blank=True)
+  OM_PHONE=models.CharField(max_length=30,null=True,blank=True)
+  OIC_NAME=models.CharField(max_length=30,null=True,blank=True)
+  OIC_MAIL=models.CharField(max_length=30,null=True,blank=True)
+  OIC_PHONE=models.CharField(max_length=30,null=True,blank=True)
+  SBU=models.CharField(max_length=5,null=True,blank=True)
+  STORETYPE=models.CharField(max_length=10,null=True,blank=True)
+  SITEPROFILE=models.CharField(max_length=20,null=True,blank=True)
+  CONNECTION_TYPE=models.CharField(max_length=20,null=True,blank=True)
+  STORESTATUS_SQL=models.CharField(max_length=20,null=True,blank=True)
+  STOREOPEN_DATE=models.CharField(max_length=20,null=True,blank=True)
+  STORECLOSE_DATE=models.CharField(max_length=20,null=True,blank=True)
+  FAILOVER_STATUS=models.CharField(max_length=20,null=True,blank=True)
+  JASPER_NUMBER_DEVICE=models.CharField(max_length=20,null=True,blank=True)
+  JASPESR_DEVICE=models.CharField(max_length=20,null=True,blank=True)
+  JASPER_IPADDRESS=models.CharField(max_length=20,null=True,blank=True)
+  JASPER_MSISDN=models.CharField(max_length=20,null=True,blank=True)
+  JASPER_IMSI=models.CharField(max_length=20,null=True,blank=True)
+  ROOT_STATUS=models.CharField(max_length=20,null=True,blank=True)
+  IP_EXTERNAL=models.CharField(max_length=20,null=True,blank=True)
+  IP_MIKROTIK=models.CharField(max_length=20,null=True,blank=True)
+  IP_GATEWAY=models.CharField(max_length=20,null=True,blank=True)
+  IP_FORTIGATE=models.CharField(max_length=20,null=True,blank=True)
+
+
+
+class ServerListModel(models.Model):
+ #primary_key=True, max_length=5)
+  Server_Status =models.CharField(max_length=50,null=True,blank=True)
+  Name =models.CharField(primary_key=True,max_length=5)
+  Hostname =models.CharField(max_length=60,null=True,blank=True)
+  IP =models.CharField(max_length=20,null=True,blank=True)
+  Windows_Server =models.CharField(max_length=50,null=True,blank=True)
+  CPU =models.CharField(max_length=20,null=True,blank=True)
+  Memory =models.CharField(max_length=20,null=True,blank=True)
+  SQL_Version =models.CharField(max_length=50,null=True,blank=True)
+  Disc_Size =models.CharField(max_length=20,null=True,blank=True)
+  Location =models.CharField(max_length=20,null=True,blank=True)
+
+
+# from django.db.models.fields.related import OneToOneField
+# from users.models import UserAccounts
+# from django.db import models
 # from django.contrib.auth.models import UserAccounts
 
 # Create your models here.

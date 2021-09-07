@@ -25,7 +25,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('expenses/', include('expenses.urls')),
-    # path('api/',include('base.urls')),
+    path('api/',include('base.urls')),
     path('auth/',include('authentication.urls')),
     path('', TemplateView.as_view(template_name='index.html')),
     # path('^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),

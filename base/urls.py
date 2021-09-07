@@ -2,6 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.getRoutes, name="routes"),
-    path('menuaccess/', views.getUserAccessMenu, name="menuaccess"),
+    path('storemaster/', views.StoreMasterAPIView.as_view(), name='storemaster'),
+    path('listserver/', views.ListServerAPIView.as_view(), name='listserver'),
 ]

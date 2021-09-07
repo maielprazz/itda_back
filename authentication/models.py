@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
 		
 class User(AbstractBaseUser, PermissionsMixin):
 	username= models.CharField(max_length=255, unique=True, db_index=True)
-	email= models.EmailField(max_length=255, unique=True, db_index=True)
+	email= models.EmailField(max_length=255, unique=True, db_index=True, default="default@email.id")
 	employeeID=models.CharField(max_length=20, null=True,blank=True)
 	is_verified= models.BooleanField(default=True)
 	is_active=models.BooleanField(default=True)
